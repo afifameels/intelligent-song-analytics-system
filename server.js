@@ -1,42 +1,25 @@
 require('dotenv').config();
+
 const express = require('express');
-const connectDB = require('./config/db');
-const Song = require('./src/models/song');
-const { calculateMood, getStreamingReport } = require('./controllers/songController');
+const mongoose = require('mongoose');
+const path = require('path');
+
+const songRoutes = require('./routes/songRoutes');
 
 const app = express();
-connectDB();
 
-async function runSystem() {
+app.use(express.json());
 
-    const newSong = {
-        id_track: "A101",
-        trackName: "Lagu Baru",
-        artists: ["Artis Kece"],
-        popularity: 85,
-        streamEst2025: 2500000,
-        audioFeatures: {
-            danceability: 0.85,
-            valence: 0.75
-        }
-    };
+app.use(express.static(path.join(__dirname, 'public')));
 
-    newSong.moodTag = calculateMood(
-        newSong.audioFeatures.danceability,
-        newSong.audioFeatures.valence
-    );
+app.use('/api', songRoutes);
 
-    await Song.create(newSong);
-
-    console.log("✅ Fitur Analisis Mood Berhasil:", newSong.moodTag);
-
-    await getStreamingReport();
-}
-
-runSystem();
+mongoose.connect(process.env.MONGO_URI)
+.then(() => console.log('✅ MongoDB Connected'))
+.catch(err => console.log(err));
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () =>
-    console.log(`🚀 Server jalan di port ${PORT}`)
-);
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+});
