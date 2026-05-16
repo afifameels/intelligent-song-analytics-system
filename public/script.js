@@ -96,21 +96,25 @@ function renderSongs(songs){
             </td>
 
             <td>
-<button
-class="action-btn view-btn"
-onclick="viewSong('${song._id}')">
+<div class="action-group">
 
-    View
+    <button
+    class="action-btn view-btn"
+    onclick="viewSong('${song._id}')">
 
-</button>
+        View
 
-                <button
-                class="action-btn delete-btn"
-                onclick="deleteSong('${song._id}')">
+    </button>
 
-                    Delete
+    <button
+    class="action-btn delete-btn"
+    onclick="deleteSong('${song._id}')">
 
-                </button>
+        Delete
+
+    </button>
+
+</div>
 
             </td>
 
@@ -134,21 +138,27 @@ function renderArtists(songs){
         (song.artist_names || [])
         .forEach(artist => {
 
-            artists[artist] =
-            (artists[artist] || 0) + 1;
+            if(!artists[artist]){
+                artists[artist] = [];
+            }
+
+            artists[artist].push(song.track_name);
         });
     });
 
     Object.entries(artists)
-    .forEach(([artist,total]) => {
+    .forEach(([artist,songList]) => {
 
         container.innerHTML += `
 
-        <div class="artist-card">
+        <div
+        class="artist-card"
+        onclick="showArtistSongs('${artist}')">
 
             <h2>${artist}</h2>
 
-            <p>${total} Songs</p>
+            <p>${songList.length} Songs</p>
+
 
         </div>
 
@@ -170,24 +180,29 @@ function renderGenres(songs){
         const genre =
         song.genres || 'Unknown';
 
-        genres[genre] =
-        (genres[genre] || 0) + 1;
+        if(!genres[genre]){
+            genres[genre] = [];
+        }
+
+        genres[genre].push(song.track_name);
     });
 
     Object.entries(genres)
-    .forEach(([genre,total]) => {
+    .forEach(([genre,songList]) => {
 
         container.innerHTML += `
 
-        <div class="genre-item">
+        <div
+        class="genre-item"
+        onclick="showGenreSongs('${genre}')">
 
             <span>${genre}</span>
 
             <div class="bar">
-
-                <div style="width:${total * 20}%"></div>
-
+                <div style="width:${songList.length * 10}%"></div>
             </div>
+
+            <p>${songList.length} Songs</p>
 
         </div>
 
@@ -245,72 +260,83 @@ function searchSongs(){
 
 async function addSong(){
 
-    const data = {
+    const track_name =
+    document.getElementById('track_name').value.trim();
 
-        id_track:
-        document.getElementById('id_track').value,
+    const artist_name =
+    document.getElementById('artist_name').value.trim();
 
-        track_name:
-        document.getElementById('track_name').value,
+    const genres =
+    document.getElementById('genres').value.trim();
 
-        album_name:
-        document.getElementById('album_name').value,
+    const popularity =
+    document.getElementById('popularity').value.trim();
 
-        artist_names:[
-            document.getElementById('artist_name').value
-        ],
+    const streams =
+    document.getElementById('streams').value.trim();
 
-        genres:
-        document.getElementById('genre').value,
+    console.log(
+        track_name,
+        artist_name,
+        genres,
+        popularity,
+        streams
+    );
 
-        record_label:
-        document.getElementById('record_label').value,
+    if(
+        !track_name ||
+        !artist_name ||
+        !genres ||
+        !popularity ||
+        !streams
+    ){
+        alert('Please fill all fields');
+        return;
+    }
 
-        popularity:
-        Number(
-            document.getElementById('popularity').value
-        ),
+    try{
 
-        danceability:
-        Number(
-            document.getElementById('danceability').value
-        ),
+        const response = await fetch('/api/songs',{
 
-        energy:
-        Number(
-            document.getElementById('energy').value
-        ),
+            method:'POST',
 
-        valence:
-        Number(
-            document.getElementById('valence').value
-        ),
+            headers:{
+                'Content-Type':'application/json'
+            },
 
-        tempo:
-        Number(
-            document.getElementById('tempo').value
-        ),
+            body:JSON.stringify({
 
-        estimated_streams_2025:
-        Number(
-            document.getElementById('streams').value
-        )
-    };
+                track_name,
+                artist_names:[artist_name],
+                genres,
+                popularity,
+                estimated_streams_2025:streams
 
-    await fetch('/api/songs',{
+            })
 
-        method:'POST',
+        });
 
-        headers:{
-            'Content-Type':'application/json'
-        },
+        if(response.ok){
 
-        body:JSON.stringify(data)
-    });
+            alert('Song added successfully 🎵');
 
-    closeModal();
+            closeModal();
 
-    loadSongs();
+            loadSongs();
+
+        }else{
+
+            alert('Failed to add song');
+
+        }
+
+    }catch(err){
+
+        console.log(err);
+
+        alert('Server error');
+
+    }
 }
 
 async function deleteSong(id){
@@ -355,25 +381,71 @@ function loadCharts(songs){
     .slice(0,5);
 
     new Chart(
-        document.getElementById('streamChart'),
-        {
-            type:'bar',
+    document.getElementById('streamChart'),
+    {
+        type:'bar',
 
-            data:{
-                labels:
+        data:{
+            labels:
+            topSongs.map(
+                s=>s.track_name
+            ),
+
+            datasets:[{
+
+                label:'Popularity',
+
+                data:
                 topSongs.map(
-                    s=>s.track_name
+                    s=>s.popularity
                 ),
 
-                datasets:[{
-                    data:
-                    topSongs.map(
-                        s=>s.popularity
-                    )
-                }]
+                borderRadius:14,
+                borderSkipped:false
+            }]
+        },
+
+        options:{
+
+            responsive:true,
+
+            plugins:{
+                legend:{
+                    display:false
+                }
+            },
+
+            scales:{
+
+                y:{
+
+                    min:80,
+                    max:100,
+
+                    ticks:{
+                        stepSize:2,
+                        color:'#9ca3af'
+                    },
+
+                    grid:{
+                        color:'rgba(255,255,255,0.05)'
+                    }
+                },
+
+                x:{
+
+                    ticks:{
+                        color:'#9ca3af'
+                    },
+
+                    grid:{
+                        display:false
+                    }
+                }
             }
         }
-    );
+    }
+);
 
     new Chart(
         document.getElementById('moodChart'),
@@ -506,4 +578,158 @@ function closeDetail(){
 
     document.getElementById('detailModal')
     .style.display = 'none';
+}
+
+document
+.getElementById('saveSong')
+.addEventListener('click',()=>{
+
+    const title =
+    document.getElementById('songTitle').value;
+
+    const artist =
+    document.getElementById('songArtist').value;
+
+    const genre =
+    document.getElementById('songGenre').value;
+
+    const popularity =
+    document.getElementById('songPopularity').value;
+
+    const streams =
+    document.getElementById('songStreams').value;
+
+    if(
+    !title ||
+    !artist ||
+    !genre ||
+    !popularity ||
+    !streams
+    ){
+        alert('Please fill all fields');
+        return;
+    }
+
+    const row =
+    document.createElement('tr');
+
+    row.innerHTML = `
+
+    <td>${title}</td>
+
+    <td>${artist}</td>
+
+    <td>${genre}</td>
+
+    <td>${popularity}</td>
+
+    <td>${streams}</td>
+
+    <td>
+
+    <div class="action-group">
+
+    <button class="action-btn view-btn">
+    👁 View
+    </button>
+
+    <button class="action-btn delete-btn">
+    🗑 Delete
+    </button>
+
+    </div>
+
+    </td>
+    `;
+
+    document
+    .getElementById('songTable')
+    .appendChild(row);
+
+    document
+    .getElementById('songModal')
+    .style.display='none';
+
+});
+
+function showArtistSongs(artist){
+
+    const filtered =
+    allSongs.filter(song =>
+        song.artist_names?.includes(artist)
+    );
+
+    renderSongs(filtered);
+
+    document.querySelectorAll('.page')
+    .forEach(page=>{
+        page.classList.remove('active-page');
+    });
+
+    document
+    .getElementById('songs')
+    .classList.add('active-page');
+}
+
+function showGenreSongs(genre){
+
+    const filtered =
+    allSongs.filter(song =>
+        song.genres === genre
+    );
+
+    renderSongs(filtered);
+
+    document.querySelectorAll('.page')
+    .forEach(page=>{
+        page.classList.remove('active-page');
+    });
+
+    document
+    .getElementById('songs')
+    .classList.add('active-page');
+}
+
+function filterMood(mood){
+
+    let filtered = [];
+
+    if(mood === 'Happy'){
+        filtered =
+        allSongs.filter(song =>
+            song.valence > 0.6
+        );
+    }
+
+    else if(mood === 'Sad'){
+        filtered =
+        allSongs.filter(song =>
+            song.valence < 0.3
+        );
+    }
+
+    else if(mood === 'Chill'){
+        filtered =
+        allSongs.filter(song =>
+            song.energy < 0.5
+        );
+    }
+
+    else if(mood === 'Energetic'){
+        filtered =
+        allSongs.filter(song =>
+            song.energy > 0.7
+        );
+    }
+
+    renderSongs(filtered);
+
+    document.querySelectorAll('.page')
+    .forEach(page=>{
+        page.classList.remove('active-page');
+    });
+
+    document
+    .getElementById('songs')
+    .classList.add('active-page');
 }
