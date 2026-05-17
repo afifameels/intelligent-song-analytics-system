@@ -71,34 +71,41 @@
                 <p>Music analytics overview</p>
             </div>
 
-            <button class="primary-btn" onclick="openModal()">
-                + Add Song
-            </button>
+            <div class="topbar-actions">
 
-        </div>
+    <button class="primary-btn" onclick="openModal()">
+        + Add Song
+    </button>
+
+    <button class="primary-btn logout-btn" onclick="logout()">
+        Logout
+    </button>
+
+</div>
+
+</div>
 
         <div class="stats">
 
-            <div class="stat-card">
-                <span>Total Songs</span>
-                <h1 id="songCount">0</h1>
-            </div>
+            <div class="stat-card" onclick="goPage('songs')">
+    <span>Total Songs</span>
+    <h1 id="songCount">0</h1>
+</div>
 
-            <div class="stat-card">
-                <span>Total Artists</span>
-                <h1 id="artistCount">0</h1>
-            </div>
+<div class="stat-card" onclick="goPage('artists')">
+    <span>Total Artists</span>
+    <h1 id="artistCount">0</h1>
+</div>
 
-            <div class="stat-card">
-                <span>Total Genres</span>
-                <h1 id="genreCount">0</h1>
-            </div>
+<div class="stat-card" onclick="goPage('genres')">
+    <span>Total Genres</span>
+    <h1 id="genreCount">0</h1>
+</div>
 
-            <div class="stat-card">
-                <span>Total Streams</span>
-                <h1 id="streamCount">0</h1>
-            </div>
-
+<div class="stat-card" onclick="goPage('rankings')">
+    <span>Total Streams</span>
+    <h1 id="streamCount">0</h1>
+</div>
         </div>
 
         <div class="chart-grid">

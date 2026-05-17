@@ -1,3 +1,8 @@
+if(localStorage.getItem('isLoggedIn') !== 'true'){
+
+    window.location.href = '/login.html';
+}
+
 let allSongs = [];
 
 loadSongs();
@@ -732,4 +737,27 @@ function filterMood(mood){
     document
     .getElementById('songs')
     .classList.add('active-page');
+}
+
+function logout(){
+
+    localStorage.removeItem('loggedIn');
+
+    window.location.href = 'login.html';
+}
+
+function goPage(pageId){
+
+    document.querySelectorAll('.page')
+    .forEach(page => {
+        page.classList.remove('active-page');
+    });
+
+    document.getElementById(pageId)
+    .classList.add('active-page');
+
+    document.querySelectorAll('.nav-btn')
+    .forEach(btn => {
+        btn.classList.remove('active');
+    });
 }

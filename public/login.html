@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Login • SongAI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+    radial-gradient(circle at top left,#312e81 0%,transparent 30%),
+    radial-gradient(circle at bottom right,#0f766e 0%,transparent 30%),
+    #09090f;
+
+    overflow:hidden;
+}
+
+.login-box{
+
+    width:420px;
+
+    background:rgba(255,255,255,0.05);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter:blur(18px);
+
+    border-radius:32px;
+
+    padding:40px;
+
+    box-shadow:
+    0 20px 60px rgba(0,0,0,0.4);
+}
+
+.logo{
+
+    font-size:42px;
+
+    font-weight:700;
+
+    text-align:center;
+
+    margin-bottom:10px;
+
+    background:linear-gradient(to right,#8b5cf6,#06b6d4);
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+}
+
+.subtitle{
+
+    text-align:center;
+
+    color:#9ca3af;
+
+    margin-bottom:35px;
+}
+
+.input-group{
+    margin-bottom:18px;
+}
+
+.input-group label{
+
+    display:block;
+
+    color:#d4d4d8;
+
+    margin-bottom:8px;
+
+    font-size:14px;
+}
+
+.input-group input{
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:16px;
+
+    background:rgba(255,255,255,0.06);
+
+    color:white;
+
+    font-size:15px;
+}
+
+.input-group input::placeholder{
+    color:#71717a;
+}
+
+.login-btn{
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:18px;
+
+    margin-top:10px;
+
+    background:linear-gradient(to right,#8b5cf6,#2563eb);
+
+    color:white;
+
+    font-weight:600;
+
+    font-size:15px;
+
+    cursor:pointer;
+
+    transition:0.3s;
+}
+
+.login-btn:hover{
+
+    transform:translateY(-2px);
+
+    opacity:0.95;
+}
+
+.demo{
+
+    margin-top:25px;
+
+    text-align:center;
+
+    color:#a1a1aa;
+
+    font-size:14px;
+
+    line-height:1.7;
+}
+
+.error{
+
+    color:#ef4444;
+
+    text-align:center;
+
+    margin-top:14px;
+
+    display:none;
+}
+
+@media(max-width:500px){
+
+    .login-box{
+        width:92%;
+        padding:28px;
+    }
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="login-box">
+
+    <div class="logo">
+        🎵 museekk
+    </div>
+
+    <p class="subtitle">
+        Intelligent Song Analytics System
+    </p>
+
+    <div class="input-group">
+        <label>Email</label>
+        <input
+        type="email"
+        id="email"
+        placeholder="Enter your email">
+    </div>
+
+    <div class="input-group">
+        <label>Password</label>
+        <input
+        type="password"
+        id="password"
+        placeholder="Enter your password">
+    </div>
+
+    <button
+    class="login-btn"
+    onclick="login()">
+
+        Login
+
+    </button>
+
+    <div class="error" id="errorMsg">
+        Invalid email or password
+    </div>
+
+</div>
+
+<script>
+
+function login(){
+
+    const email =
+    document.getElementById('email').value;
+
+    const password =
+    document.getElementById('password').value;
+
+    if(email !== '' && password !== ''){
+
+        localStorage.setItem('isLoggedIn','true');
+
+        window.location.href = '/';
+
+    }else{
+
+        document.getElementById('errorMsg')
+        .style.display = 'block';
+
+        document.getElementById('errorMsg')
+        .innerText =
+        'Please fill all fields';
+    }
+}
+
+</script>
+
+</body>
+</html>
