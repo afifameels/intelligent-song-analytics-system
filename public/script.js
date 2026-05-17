@@ -5,9 +5,20 @@ if(localStorage.getItem('isLoggedIn') !== 'true'){
 
 let allSongs = [];
 
+let previousPage = 'dashboard';
+
 loadSongs();
 
 function showPage(event,pageId){
+
+    const activePage =
+    document.querySelector('.active-page');
+
+    if(activePage){
+
+        previousPage =
+        activePage.id;
+    }
 
     document.querySelectorAll('.page')
     .forEach(page => {
@@ -37,7 +48,13 @@ async function loadSongs(){
 
     renderArtists(songs);
 
-    renderGenres(songs);    
+    renderAlbums(songs);
+
+    renderLabels(songs);
+
+    renderGenres(songs);
+
+    renderMoods(songs); 
 
     renderRankings(songs);
 
@@ -585,98 +602,28 @@ function closeDetail(){
     .style.display = 'none';
 }
 
-document
-.getElementById('saveSong')
-.addEventListener('click',()=>{
-
-    const title =
-    document.getElementById('songTitle').value;
-
-    const artist =
-    document.getElementById('songArtist').value;
-
-    const genre =
-    document.getElementById('songGenre').value;
-
-    const popularity =
-    document.getElementById('songPopularity').value;
-
-    const streams =
-    document.getElementById('songStreams').value;
-
-    if(
-    !title ||
-    !artist ||
-    !genre ||
-    !popularity ||
-    !streams
-    ){
-        alert('Please fill all fields');
-        return;
-    }
-
-    const row =
-    document.createElement('tr');
-
-    row.innerHTML = `
-
-    <td>${title}</td>
-
-    <td>${artist}</td>
-
-    <td>${genre}</td>
-
-    <td>${popularity}</td>
-
-    <td>${streams}</td>
-
-    <td>
-
-    <div class="action-group">
-
-    <button class="action-btn view-btn">
-    👁 View
-    </button>
-
-    <button class="action-btn delete-btn">
-    🗑 Delete
-    </button>
-
-    </div>
-
-    </td>
-    `;
-
-    document
-    .getElementById('songTable')
-    .appendChild(row);
-
-    document
-    .getElementById('songModal')
-    .style.display='none';
-
-});
-
 function showArtistSongs(artist){
+
+    showPage(
+        { target: document.querySelectorAll('.nav-btn')[1] },
+        'songs'
+    );
 
     const filtered =
     allSongs.filter(song =>
-        song.artist_names?.includes(artist)
+        (song.artist_names || [])
+        .includes(artist)
     );
 
     renderSongs(filtered);
-
-    document.querySelectorAll('.page')
-    .forEach(page=>{
-        page.classList.remove('active-page');
-    });
-
-    document
-    .getElementById('songs')
-    .classList.add('active-page');
 }
-
 function showGenreSongs(genre){
+
+
+    showPage(
+        { target: document.querySelectorAll('.nav-btn')[1] },
+        'songs'
+    );
 
     const filtered =
     allSongs.filter(song =>
@@ -684,15 +631,6 @@ function showGenreSongs(genre){
     );
 
     renderSongs(filtered);
-
-    document.querySelectorAll('.page')
-    .forEach(page=>{
-        page.classList.remove('active-page');
-    });
-
-    document
-    .getElementById('songs')
-    .classList.add('active-page');
 }
 
 function filterMood(mood){
@@ -700,6 +638,7 @@ function filterMood(mood){
     let filtered = [];
 
     if(mood === 'Happy'){
+
         filtered =
         allSongs.filter(song =>
             song.valence > 0.6
@@ -707,6 +646,7 @@ function filterMood(mood){
     }
 
     else if(mood === 'Sad'){
+
         filtered =
         allSongs.filter(song =>
             song.valence < 0.3
@@ -714,6 +654,7 @@ function filterMood(mood){
     }
 
     else if(mood === 'Chill'){
+
         filtered =
         allSongs.filter(song =>
             song.energy < 0.5
@@ -721,6 +662,7 @@ function filterMood(mood){
     }
 
     else if(mood === 'Energetic'){
+
         filtered =
         allSongs.filter(song =>
             song.energy > 0.7
@@ -737,11 +679,97 @@ function filterMood(mood){
     document
     .getElementById('songs')
     .classList.add('active-page');
+
+    document.querySelectorAll('.nav-btn')
+    .forEach(btn=>{
+        btn.classList.remove('active');
+    });
+
+    document.querySelectorAll('.nav-btn')[1]
+    .classList.add('active');
 }
+
+function renderMoods(songs){
+
+    const container =
+    document.getElementById('moodContainer');
+
+    if(!container) return;
+
+    container.innerHTML = '';
+
+    const moods = [
+
+        {
+            name:'Happy',
+            emoji:'😊',
+            class:'happy',
+            filter:s=>s.valence > 0.6
+        },
+
+        {
+            name:'Sad',
+            emoji:'😢',
+            class:'sad',
+            filter:s=>s.valence < 0.3
+        },
+
+        {
+            name:'Chill',
+            emoji:'🌊',
+            class:'chill',
+            filter:s=>s.energy < 0.5
+        },
+
+        {
+            name:'Energetic',
+            emoji:'⚡',
+            class:'energetic',
+            filter:s=>s.energy > 0.7
+        }
+    ];
+
+    moods.forEach(mood=>{
+
+        const moodSongs =
+        songs.filter(mood.filter);
+
+        const topSong =
+        moodSongs[0]?.track_name || '-';
+
+        container.innerHTML += `
+
+        <div
+        class="mood-card ${mood.class}"
+        onclick="filterMood('${mood.name}')">
+
+            <div>
+
+                <h2>
+                    ${mood.emoji}
+                    ${mood.name}
+                </h2>
+
+                <p>
+                    ${moodSongs.length} Songs
+                </p>
+
+                <span>
+                    Top: ${topSong}
+                </span>
+
+            </div>
+
+        </div>
+
+        `;
+    });
+}
+
 
 function logout(){
 
-    localStorage.removeItem('loggedIn');
+    localStorage.removeItem('isLoggedIn');
 
     window.location.href = 'login.html';
 }
@@ -760,4 +788,161 @@ function goPage(pageId){
     .forEach(btn => {
         btn.classList.remove('active');
     });
+}
+
+function renderAlbums(songs){
+
+    const container =
+    document.getElementById('albumContainer');
+
+    container.innerHTML = '';
+
+    const albums = {};
+
+    songs.forEach(song => {
+
+        const album =
+        song.album_name || 'Unknown Album';
+
+        albums[album] =
+        (albums[album] || 0) + 1;
+    });
+
+    Object.entries(albums)
+    .forEach(([album,total]) => {
+
+        container.innerHTML += `
+
+        <div
+        class="artist-card"
+        onclick="searchByAlbum('${album}')">
+
+            <h2>${album}</h2>
+
+            <p>${total} Songs</p>
+
+        </div>
+
+        `;
+    });
+}
+
+function renderLabels(songs){
+
+    const container =
+    document.getElementById('labelContainer');
+
+    container.innerHTML = '';
+
+    const labels = {};
+
+    songs.forEach(song => {
+
+        const label =
+        song.record_label || 'Unknown Label';
+
+        labels[label] =
+        (labels[label] || 0) + 1;
+    });
+
+    Object.entries(labels)
+    .forEach(([label,total]) => {
+
+        container.innerHTML += `
+
+        <div
+        class="artist-card"
+        onclick="showLabelSongs('${label}')">
+
+            <h2>${label}</h2>
+
+            <p>${total} Songs</p>
+
+        </div>
+
+        `;
+    });
+}
+
+function searchByAlbum(albumName){
+
+    showPage(
+        { target: document.querySelectorAll('.nav-btn')[1] },
+        'songs'
+    );
+
+    const filtered =
+    allSongs.filter(song =>
+        song.album_name === albumName
+    );
+
+    renderSongs(filtered);
+}
+
+function showLabelSongs(label){
+
+    const filtered =
+    allSongs.filter(song =>
+        song.record_label === label
+    );
+
+    renderSongs(filtered);
+
+    document.querySelectorAll('.page')
+    .forEach(page=>{
+        page.classList.remove('active-page');
+    });
+
+    document
+    .getElementById('songs')
+    .classList.add('active-page');
+
+    document.querySelectorAll('.nav-btn')
+    .forEach(btn=>{
+        btn.classList.remove('active');
+    });
+
+    document.querySelectorAll('.nav-btn')[1]
+    .classList.add('active');
+}
+
+function goBack(){
+
+    document.querySelectorAll('.page')
+    .forEach(page=>{
+        page.classList.remove('active-page');
+    });
+
+    document
+    .getElementById(previousPage)
+    .classList.add('active-page');
+
+    document.querySelectorAll('.nav-btn')
+    .forEach(btn=>{
+        btn.classList.remove('active');
+    });
+
+    const pageMap = {
+
+        dashboard:0,
+        songs:1,
+        artists:2,
+        albums:3,
+        labels:4,
+        genres:5,
+        moods:6,
+        rankings:7
+    };
+
+    const index =
+    pageMap[previousPage];
+
+    if(index !== undefined){
+
+        document
+        .querySelectorAll('.nav-btn')[index]
+        .classList.add('active');
+    }
+
+    renderSongs(allSongs);
 }

@@ -40,6 +40,14 @@
             Artists
         </button>
 
+        <button class="nav-btn" onclick="showPage(event,'albums')">
+            Albums
+        </button>
+
+        <button class="nav-btn" onclick="showPage(event,'labels')">
+            Labels
+        </button>
+
         <button class="nav-btn" onclick="showPage(event,'genres')">
             Genres
         </button>
@@ -131,6 +139,15 @@
         <div class="topbar">
 
             <div>
+
+                <button
+class="back-btn"
+onclick="goBack()">
+
+    ← Back
+
+</button>
+
                 <h1>Song Catalog</h1>
                 <p>Manage all songs</p>
             </div>
@@ -191,6 +208,26 @@
 
     </section>
 
+<!-- ALBUMS -->
+
+<section id="albums" class="page">
+
+    <div class="topbar">
+
+        <div>
+            <h1>Albums</h1>
+            <p>Albums analytics overview</p>
+        </div>
+
+    </div>
+
+    <div class="grid-box"
+    id="albumContainer">
+
+    </div>
+
+</section>
+
     <!-- GENRES -->
 
     <section id="genres" class="page">
@@ -208,6 +245,26 @@
 
     </section>
 
+<!-- LABELS -->
+
+<section id="labels" class="page">
+
+    <div class="topbar">
+
+        <div>
+            <h1>Labels</h1>
+            <p>Record labels overview</p>
+        </div>
+
+    </div>
+
+    <div class="grid-box"
+    id="labelContainer">
+
+    </div>
+
+</section>
+
     <!-- MOODS -->
 
     <section id="moods" class="page">
@@ -221,23 +278,7 @@
 
         </div>
 
-        <div class="mood-grid">
-
-            <div class="mood-card happy" onclick="filterMood('Happy')">
-    Happy
-</div>
-
-<div class="mood-card chill" onclick="filterMood('Chill')">
-    Chill
-</div>
-
-<div class="mood-card sad" onclick="filterMood('Sad')">
-    Sad
-</div>
-
-<div class="mood-card energetic" onclick="filterMood('Energetic')">
-    Energetic
-</div>
+        <div class="mood-grid" id="moodContainer">
 
         </div>
 
