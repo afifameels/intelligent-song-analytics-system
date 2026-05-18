@@ -497,53 +497,77 @@ tr:hover{
     );
 }
 
-/* MOODS */
-
-.mood-grid{
+#moodContainer{
     display:grid;
-    grid-template-columns:repeat(2,1fr);
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
     gap:20px;
+    margin-top:25px;
 }
 
 .mood-card{
-
-    height:180px;
-
-    border-radius:30px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    font-size:28px;
-
-    font-weight:700;
-
-    transition:0.3s;
-
+    position:relative;
+    overflow:hidden;
+    padding:28px;
+    border-radius:24px;
     cursor:pointer;
+    transition:0.3s ease;
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.08);
+    backdrop-filter:blur(12px);
 }
 
 .mood-card:hover{
-    transform:scale(1.03);
+    transform:translateY(-6px);
+    border-color:#7c5cff;
+    box-shadow:0 10px 30px rgba(124,92,255,0.25);
 }
 
-.happy{
-    background:linear-gradient(135deg,#22c55e,#4ade80);
+.mood-card h2{
+    font-size:26px;
+    font-weight:700;
+    margin-bottom:12px;
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
-.chill{
-    background:linear-gradient(135deg,#3b82f6,#60a5fa);
+.mood-card p{
+    font-size:15px;
+    color:#d1d5db;
+    margin-bottom:6px;
 }
 
-.sad{
-    background:linear-gradient(135deg,#6366f1,#8b5cf6);
+.mood-card span{
+    font-size:14px;
+    color:#9ca3af;
 }
 
-.energetic{
-    background:linear-gradient(135deg,#f59e0b,#f97316);
+/* Accent line */
+.mood-card::before{
+    content:'';
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:5px;
+}
+
+/* Mood colors */
+
+.happy::before{
+    background:#22c55e;
+}
+
+.sad::before{
+    background:#6366f1;
+}
+
+.chill::before{
+    background:#06b6d4;
+}
+
+.energetic::before{
+    background:#f59e0b;
 }
 
 /* RANKING */
@@ -898,4 +922,83 @@ tr:hover{
     font-size:14px;
 
     opacity:0.7;
+}
+
+.mood-insight{
+    margin-top:30px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:20px;
+}
+
+.insight-box{
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.08);
+    padding:24px;
+    border-radius:20px;
+    backdrop-filter:blur(10px);
+}
+
+.insight-box p{
+    color:#9ca3af;
+    margin-bottom:10px;
+}
+
+.insight-box span{
+    font-size:22px;
+    font-weight:700;
+}
+
+.quote-box{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    font-style:italic;
+}
+
+.mood-bottom-section{
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+    margin-top:30px;
+}
+
+.mood-quote-card,
+.mood-top-card{
+
+    background:#111827;
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:24px;
+    padding:28px;
+}
+
+.mood-quote-card h2,
+.mood-top-card h2{
+
+    font-size:24px;
+    margin-bottom:16px;
+    color:white;
+}
+
+.mood-quote-card p{
+
+    color:#9ca3af;
+    line-height:1.8;
+    font-size:15px;
+}
+
+.top-mood-item{
+
+    display:flex;
+    justify-content:space-between;
+    padding:14px 0;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    color:white;
+}
+
+.top-mood-item:last-child{
+
+    border-bottom:none;
 }

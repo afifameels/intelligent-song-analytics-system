@@ -95,26 +95,67 @@
 
         <div class="stats">
 
-            <div class="stat-card" onclick="goPage('songs')">
-    <span>Total Songs</span>
-    <h1 id="songCount">0</h1>
-</div>
+    <div
+    class="stat-card"
+    onclick="goToPage('songs')">
 
-<div class="stat-card" onclick="goPage('artists')">
-    <span>Total Artists</span>
-    <h1 id="artistCount">0</h1>
-</div>
+        <span>Total Songs</span>
 
-<div class="stat-card" onclick="goPage('genres')">
-    <span>Total Genres</span>
-    <h1 id="genreCount">0</h1>
-</div>
+        <h1 id="songCount">0</h1>
 
-<div class="stat-card" onclick="goPage('rankings')">
-    <span>Total Streams</span>
-    <h1 id="streamCount">0</h1>
+    </div>
+
+    <div
+    class="stat-card"
+    onclick="goToPage('artists')">
+
+        <span>Total Artists</span>
+
+        <h1 id="artistCount">0</h1>
+
+    </div>
+
+    <div
+    class="stat-card"
+    onclick="goToPage('albums')">
+
+        <span>Total Albums</span>
+
+        <h1 id="albumCount">0</h1>
+
+    </div>
+
+    <div
+    class="stat-card"
+    onclick="goToPage('labels')">
+
+        <span>Total Labels</span>
+
+        <h1 id="labelCount">0</h1>
+
+    </div>
+
+    <div
+    class="stat-card"
+    onclick="goToPage('genres')">
+
+        <span>Total Genres</span>
+
+        <h1 id="genreCount">0</h1>
+
+    </div>
+
+    <div
+    class="stat-card"
+    onclick="goToPage('rankings')">
+
+        <span>Total Streams</span>
+
+        <h1 id="streamCount">0</h1>
+
+    </div>
+
 </div>
-        </div>
 
         <div class="chart-grid">
 
@@ -267,22 +308,63 @@ onclick="goBack()">
 
     <!-- MOODS -->
 
-    <section id="moods" class="page">
+   <section id="moods" class="page">
 
-        <div class="topbar">
+    <div class="topbar">
+        <div>
+            <h1>Mood Explorer</h1>
+            <p>Browse by vibes</p>
+        </div>
+    </div>
 
-            <div>
-                <h1>Mood Explorer</h1>
-                <p>Browse by vibes</p>
+    <div class="mood-grid"
+    id="moodContainer">
+
+    </div>
+
+    <!-- TAMBAHAN BARU -->
+
+    <div class="mood-bottom-section">
+
+        <div class="mood-quote-card">
+
+            <h2>🎧 Mood Insight</h2>
+
+            <p>
+                Music changes with emotions.
+                Happy songs tend to have higher valence,
+                while energetic tracks usually contain
+                stronger beats and higher tempo.
+            </p>
+
+        </div>
+
+        <div class="mood-top-card">
+
+            <h2>🔥 Most Played Mood</h2>
+
+            <div class="top-mood-item">
+                <span>⚡ Energetic</span>
+                <b>23 Songs</b>
+            </div>
+
+            <div class="top-mood-item">
+                <span>☀️ Happy</span>
+                <b>18 Songs</b>
+            </div>
+
+            <div class="top-mood-item">
+                <span>🌊 Chill</span>
+                <b>11 Songs</b>
             </div>
 
         </div>
 
-        <div class="mood-grid" id="moodContainer">
+    </div>
 
-        </div>
+</section>
 
-    </section>
+</section>
 
     <!-- RANKING -->
 

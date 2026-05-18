@@ -69,6 +69,22 @@ async function loadSongs(){
     document.getElementById('artistCount')
     .innerText = artistCount;
 
+    const albumCount =
+new Set(
+    songs.map(song => song.album_name || 'Unknown Album')
+).size;
+
+document.getElementById('albumCount')
+.innerText = albumCount;
+
+const labelCount =
+new Set(
+    songs.map(song => song.record_label || 'Unknown Label')
+).size;
+
+document.getElementById('labelCount')
+.innerText = labelCount;
+
     const genreCount =
     new Set(
         songs.map(song => song.genres)
@@ -328,29 +344,37 @@ async function addSong(){
 
             body:JSON.stringify({
 
-                track_name,
-                artist_names:[artist_name],
-                genres,
-                popularity,
-                estimated_streams_2025:streams
+    track_name,
 
-            })
+    artist_names:[artist_name],
+
+    genres,
+
+    popularity:Number(popularity),
+
+    estimated_streams_2025:Number(streams)
+
+})
 
         });
 
         if(response.ok){
 
-            alert('Song added successfully 🎵');
+    alert('Song added successfully 🎵');
 
-            closeModal();
+    closeModal();
 
-            loadSongs();
+    loadSongs();
 
-        }else{
+}else{
 
-            alert('Failed to add song');
+    const err = await response.text();
 
-        }
+    console.log(err);
+
+    alert('Failed to add song');
+
+}
 
     }catch(err){
 
@@ -701,32 +725,32 @@ function renderMoods(songs){
     const moods = [
 
         {
-            name:'Happy',
-            emoji:'😊',
-            class:'happy',
-            filter:s=>s.valence > 0.6
-        },
+    name:'Happy',
+    emoji:'☀️',
+    class:'happy',
+    filter:s=>s.valence > 0.6
+},
 
-        {
-            name:'Sad',
-            emoji:'😢',
-            class:'sad',
-            filter:s=>s.valence < 0.3
-        },
+{
+    name:'Sad',
+    emoji:'🌙',
+    class:'sad',
+    filter:s=>s.valence < 0.3
+},
 
-        {
-            name:'Chill',
-            emoji:'🌊',
-            class:'chill',
-            filter:s=>s.energy < 0.5
-        },
+{
+    name:'Chill',
+    emoji:'🌊',
+    class:'chill',
+    filter:s=>s.energy < 0.5
+},
 
-        {
-            name:'Energetic',
-            emoji:'⚡',
-            class:'energetic',
-            filter:s=>s.energy > 0.7
-        }
+{
+    name:'Energetic',
+    emoji:'⚡',
+    class:'energetic',
+    filter:s=>s.energy > 0.7
+}
     ];
 
     moods.forEach(mood=>{
@@ -945,4 +969,41 @@ function goBack(){
     }
 
     renderSongs(allSongs);
+}
+
+function goToPage(pageId){
+
+    document.querySelectorAll('.page')
+    .forEach(page=>{
+        page.classList.remove('active-page');
+    });
+
+    document
+    .getElementById(pageId)
+    .classList.add('active-page');
+
+    document.querySelectorAll('.nav-btn')
+    .forEach(btn=>{
+        btn.classList.remove('active');
+    });
+
+    const pageMap = {
+        dashboard:0,
+        songs:1,
+        artists:2,
+        albums:3,
+        labels:4,
+        genres:5,
+        moods:6,
+        rankings:7
+    };
+
+    const index = pageMap[pageId];
+
+    if(index !== undefined){
+
+        document
+        .querySelectorAll('.nav-btn')[index]
+        .classList.add('active');
+    }
 }
