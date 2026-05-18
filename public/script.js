@@ -144,14 +144,6 @@ function renderSongs(songs){
 
     </button>
 
-    <button
-    class="action-btn delete-btn"
-    onclick="deleteSong('${song._id}')">
-
-        Delete
-
-    </button>
-
 </div>
 
             </td>
@@ -296,124 +288,10 @@ function searchSongs(){
     renderSongs(filtered);
 }
 
-async function addSong(){
-
-    const track_name =
-    document.getElementById('track_name').value.trim();
-
-    const artist_name =
-    document.getElementById('artist_name').value.trim();
-
-    const genres =
-    document.getElementById('genres').value.trim();
-
-    const popularity =
-    document.getElementById('popularity').value.trim();
-
-    const streams =
-    document.getElementById('streams').value.trim();
-
-    console.log(
-        track_name,
-        artist_name,
-        genres,
-        popularity,
-        streams
-    );
-
-    if(
-        !track_name ||
-        !artist_name ||
-        !genres ||
-        !popularity ||
-        !streams
-    ){
-        alert('Please fill all fields');
-        return;
-    }
-
-    try{
-
-        const response = await fetch('/api/songs',{
-
-            method:'POST',
-
-            headers:{
-                'Content-Type':'application/json'
-            },
-
-            body:JSON.stringify({
-
-    track_name,
-
-    artist_names:[artist_name],
-
-    genres,
-
-    popularity:Number(popularity),
-
-    estimated_streams_2025:Number(streams)
-
-})
-
-        });
-
-        if(response.ok){
-
-    alert('Song added successfully 🎵');
-
-    closeModal();
-
-    loadSongs();
-
-}else{
-
-    const err = await response.text();
-
-    console.log(err);
-
-    alert('Failed to add song');
-
-}
-
-    }catch(err){
-
-        console.log(err);
-
-        alert('Server error');
-
-    }
-}
-
-async function deleteSong(id){
-
-    await fetch(`/api/songs/${id}`,{
-        method:'DELETE'
-    });
-
-    loadSongs();
-}
-
-function openModal(){
-
-    document.getElementById('modal')
-    .style.display = 'flex';
-}
-
-function closeModal(){
-
-    document.getElementById('modal')
-    .style.display = 'none';
-}
-
 window.onclick = function(e){
-
-    const modal =
-    document.getElementById('modal');
-
-    if(e.target == modal){
-
-        closeModal();
+    const detailModal = document.getElementById('detailModal');
+    if(e.target == detailModal){
+        closeDetail();
     }
 }
 

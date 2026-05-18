@@ -81,10 +81,6 @@
 
             <div class="topbar-actions">
 
-    <button class="primary-btn" onclick="openModal()">
-        + Add Song
-    </button>
-
     <button class="primary-btn logout-btn" onclick="logout()">
         Logout
     </button>
@@ -173,262 +169,122 @@
 
     </section>
 
-    <!-- SONGS -->
+   <section id="songs" class="page">
+    <div class="topbar">
+        <div>
+            <button class="back-btn" onclick="goBack()">← Back</button>
+            <h1>Song Catalog</h1>
+            <p>Monitor song analytics</p>
+        </div>
+    </div>
 
-    <section id="songs" class="page">
-
-        <div class="topbar">
-
-            <div>
-
-                <button
-class="back-btn"
-onclick="goBack()">
-
-    ← Back
-
-</button>
-
-                <h1>Song Catalog</h1>
-                <p>Manage all songs</p>
-            </div>
-
+    <div class="table-card">
+        <div class="table-tools">
+            <input type="text" id="searchInput" placeholder="Search songs..." onkeyup="searchSongs()">
         </div>
 
-        <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Artist</th>
+                    <th>Genre</th>
+                    <th>Popularity</th>
+                    <th>Streams</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="songTable"></tbody>
+        </table>
+    </div>
+</section>
 
-            <div class="table-tools">
-
-                <input
-                type="text"
-                id="searchInput"
-                placeholder="Search songs..."
-                onkeyup="searchSongs()">
-
-            </div>
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>Title</th>
-                        <th>Artist</th>
-                        <th>Genre</th>
-                        <th>Popularity</th>
-                        <th>Streams</th>
-                        <th>Actions</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody id="songTable"></tbody>
-
-            </table>
-
+<section id="artists" class="page">
+    <div class="topbar">
+        <div>
+            <h1>Artists</h1>
+            <p>Top artists analytics</p>
         </div>
-
-    </section>
-
-    <!-- ARTISTS -->
-
-    <section id="artists" class="page">
-
-        <div class="topbar">
-
-            <div>
-                <h1>Artists</h1>
-                <p>Top artists analytics</p>
-            </div>
-
-        </div>
-
-        <div class="grid-box" id="artistContainer"></div>
-
-    </section>
-
-<!-- ALBUMS -->
+    </div>
+    <div class="grid-box" id="artistContainer"></div>
+</section>
 
 <section id="albums" class="page">
-
     <div class="topbar">
-
         <div>
             <h1>Albums</h1>
             <p>Albums analytics overview</p>
         </div>
-
     </div>
-
-    <div class="grid-box"
-    id="albumContainer">
-
-    </div>
-
+    <div class="grid-box" id="albumContainer"></div>
 </section>
 
-    <!-- GENRES -->
-
-    <section id="genres" class="page">
-
-        <div class="topbar">
-
-            <div>
-                <h1>Genres</h1>
-                <p>Popular genres analytics</p>
-            </div>
-
+<section id="genres" class="page">
+    <div class="topbar">
+        <div>
+            <h1>Genres</h1>
+            <p>Popular genres analytics</p>
         </div>
-
-        <div class="genre-list" id="genreContainer"></div>
-
-    </section>
-
-<!-- LABELS -->
+    </div>
+    <div class="genre-list" id="genreContainer"></div>
+</section>
 
 <section id="labels" class="page">
-
     <div class="topbar">
-
         <div>
             <h1>Labels</h1>
             <p>Record labels overview</p>
         </div>
-
     </div>
-
-    <div class="grid-box"
-    id="labelContainer">
-
-    </div>
-
+    <div class="grid-box" id="labelContainer"></div>
 </section>
 
-    <!-- MOODS -->
-
-   <section id="moods" class="page">
-
+<section id="moods" class="page">
     <div class="topbar">
         <div>
             <h1>Mood Explorer</h1>
             <p>Browse by vibes</p>
         </div>
     </div>
-
-    <div class="mood-grid"
-    id="moodContainer">
-
-    </div>
-
-    <!-- TAMBAHAN BARU -->
+    
+    <div class="grid-box" id="moodContainer"></div>
 
     <div class="mood-bottom-section">
-
         <div class="mood-quote-card">
-
             <h2>🎧 Mood Insight</h2>
-
             <p>
                 Music changes with emotions.
                 Happy songs tend to have higher valence,
                 while energetic tracks usually contain
                 stronger beats and higher tempo.
             </p>
-
         </div>
 
         <div class="mood-top-card">
-
             <h2>🔥 Most Played Mood</h2>
-
             <div class="top-mood-item">
                 <span>⚡ Energetic</span>
                 <b>23 Songs</b>
             </div>
-
             <div class="top-mood-item">
                 <span>☀️ Happy</span>
                 <b>18 Songs</b>
             </div>
-
             <div class="top-mood-item">
                 <span>🌊 Chill</span>
                 <b>11 Songs</b>
             </div>
-
         </div>
-
     </div>
-
-</section>
-
-</section>
-
-    <!-- RANKING -->
-
-    <section id="rankings" class="page">
-
-        <div class="topbar">
-
-            <div>
-                <h1>Top Rankings</h1>
-                <p>Highest popularity songs</p>
-            </div>
-
+</section> <section id="rankings" class="page">
+    <div class="topbar">
+        <div>
+            <h1>Top Rankings</h1>
+            <p>Highest popularity songs</p>
         </div>
-
-        <div class="ranking-list" id="rankingContainer"></div>
-
-    </section>
-
-</div>
-
-<!-- MODAL -->
-
-<div class="modal" id="modal">
-
-    <div class="modal-content">
-
-        <h2>Add Song 🎵</h2>
-
-        <input
-        type="text"
-        id="track_name"
-        placeholder="Track Name">
-
-        <input
-        type="text"
-        id="artist_name"
-        placeholder="Artist Name">
-
-        <input
-        type="text"
-        id="genres"
-        placeholder="Genre">
-
-        <input
-        type="number"
-        id="popularity"
-        placeholder="Popularity">
-
-        <input
-        type="number"
-        id="streams"
-        placeholder="Estimated Streams 2025">
-
-        <button onclick="addSong()">
-            ✨ Save Song
-        </button>
-
-        <br><br>
-
-        <button onclick="closeModal()">
-            Close
-        </button>
-
     </div>
+    <div class="ranking-list" id="rankingContainer"></div>
+</section>
 
 </div>
 
