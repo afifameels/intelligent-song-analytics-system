@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Login • SongAI</title>
+<title>Login • 🐾moosic!</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -188,7 +188,7 @@ body{
 <div class="login-box">
 
     <div class="logo">
-        🎵 museekk
+    🐾moosic!
     </div>
 
     <p class="subtitle">
@@ -227,28 +227,26 @@ body{
 
 <script>
 
-function login(){
+function login() {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const errorMsg = document.getElementById('errorMsg');
 
-    const email =
-    document.getElementById('email').value;
+    const validEmail = "admin@moosic.com"; 
+    const validPassword = "password123";
 
-    const password =
-    document.getElementById('password').value;
+    if (email === '' || password === '') {
+        errorMsg.style.display = 'block';
+        errorMsg.innerText = 'Please fill all fields';
+        return; 
+    }
 
-    if(email !== '' && password !== ''){
-
-        localStorage.setItem('isLoggedIn','true');
-
+    if (email === validEmail && password === validPassword) {
+        localStorage.setItem('isLoggedIn', 'true');
         window.location.href = '/';
-
-    }else{
-
-        document.getElementById('errorMsg')
-        .style.display = 'block';
-
-        document.getElementById('errorMsg')
-        .innerText =
-        'Please fill all fields';
+    } else {
+        errorMsg.style.display = 'block';
+        errorMsg.innerText = 'Invalid email or password';
     }
 }
 
